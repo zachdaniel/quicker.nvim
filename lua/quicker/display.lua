@@ -453,9 +453,9 @@ function M.quickfixtextfunc(info)
       return { { b.vert, "Delimiter" } }
     else
       return {
-        { b.vert, "Delimiter" },
+        { b.vert,                "Delimiter" },
         { lnum_fmt:format(lnum), "QuickFixLineNr" },
-        { b.vert, "Delimiter" },
+        { b.vert,                "Delimiter" },
       }
     end
   end
@@ -553,12 +553,12 @@ function M.quickfixtextfunc(info)
         local end_col = lines[i]:find(EM_QUAD, 1, true) or col_width
         local lnum = start_idx + i - 1
         local id =
-          vim.api.nvim_buf_set_extmark(qf_list.qfbufnr, ns, lnum - 1, end_col + EM_QUAD_LEN - 1, {
-            right_gravity = false,
-            virt_text = loc,
-            virt_text_pos = "inline",
-            invalidate = true,
-          })
+            vim.api.nvim_buf_set_extmark(qf_list.qfbufnr, ns, lnum - 1, end_col + EM_QUAD_LEN - 1, {
+              right_gravity = false,
+              virt_text = loc,
+              virt_text_pos = "inline",
+              invalidate = true,
+            })
         idmap[id] = lnum
 
         -- Highlight the filename
