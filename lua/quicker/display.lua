@@ -14,6 +14,8 @@ M.EM_QUAD_LEN = EM_QUAD_LEN
 ---@field header? "hard"|"soft" When present, this line is a header
 ---@field lnum? integer Encode the lnum separately for valid=0 items
 ---@field error_text? string Error text to be added as virtual text on the line
+---@field lower_bound? integer
+---@field upper_bound? integer
 
 ---@class (exact) QuickFixItem
 ---@field text string

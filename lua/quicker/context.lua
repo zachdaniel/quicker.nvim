@@ -138,13 +138,20 @@ function M.expand(opts)
 
       local item_start_idx = #items
 
-      if (opts.only_current and item.lnum ~= cur_item.lnum) then
+      local user_data = util.get_user_data(item)
+
+      local is_current = item.bufnr == cur_item.bufnr and
+          (item.lnum == cur_item.lnum or (user_data.lower_bound and item.lnum >= user_data.lower_bound and item.lnum <= user_data.upper_bound))
+
+      if opts.only_current and not is_current then
         table.insert(items, item)
       else
         local lines = vim.api.nvim_buf_get_lines(item.bufnr, low, high, false)
         for j, line in ipairs(lines) do
           if j + low == item.lnum then
             update_item_text_keep_diagnostics(item, line)
+            item.user_data.lower_bound = low
+            item.user_data.upper_bound = high
             table.insert(items, item)
           else
             table.insert(items, {
@@ -152,7 +159,7 @@ function M.expand(opts)
               lnum = low + j,
               text = line,
               valid = 0,
-              user_data = { lnum = low + j },
+              user_data = { lnum = low + j, lower_bound = low, upper_bound = high },
             })
           end
           if cur_item.bufnr == item.bufnr and cur_item.lnum == low + j then
